@@ -12,6 +12,11 @@ Relevant parts of the solution:
 - In `package.json`, the `"type"` field needs to be set to `"module"`.
 - Node.js needs to be started with `--experimental-specifier-resolution=node` and `--loader ts-node/esm`.
 - `tsconfig.json` options `"module"` and `"target"` need to be set to `"esnext"`.
-- In tests, local modules need to be imported with a `.js` extension (not `.ts`, though it matches the actual extension).
+- Local modules (with relative paths) need to be imported with a `.js` extension (not `.ts`, though it matches the actual extension).
 
 The `node-fetch` package is only used to show that ESM based dependencies (which it is since version 3.0) work. It would not, without ESM enabled.
+
+There also a few other things to note:
+
+- Access to `__dirname__` or `__filename__` is not possible in ESM. Instead, `import.meta.url` and `url.fileURLToPath()` should be used.
+- Named imports from CommonJS modules are not possible in ESM. Instead, the module should be imported with `import * as moduleName from 'moduleName'`.
